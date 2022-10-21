@@ -4,7 +4,7 @@ import math
 import time
 from pygame.color import THECOLORS
 random.seed()
-iteration = 100000
+iteration = 1000000
 WHITE = (255, 255, 255)
 color_of_point = 'black'
 color_of_pixels = 'white'
@@ -50,11 +50,12 @@ def draw(list_of_points_):
     for point in list_of_points_:
         pygame.draw.circle(screen, THECOLORS[color_of_pixels], point, point_radius, 0)
 def run():
+    print("Calculation test start")
     start_calculation = time.time()
     #calculation
     draw_triangl()
     stop_calculation = time.time()
-    start_writing = time.time()
+    print("Writing test start")
     #write
     with open('list_of_points.txt','w') as f:
         str_list = []
@@ -64,29 +65,31 @@ def run():
                 temp+=str(e)
                 temp+=','
             str_list.append(temp)
-        #print(str_list)
+        start_writing = time.time()
         f.write("\n".join(str_list))
     stop_writing = time.time()
+    print("Reading test start")
     start_reading = time.time()
     #read    
     with open('list_of_points.txt','r') as f:
         from_file_read_list = f.read().split("\n")
+        stop_reading = time.time()
         read_list = []
         for el in from_file_read_list:
             temp = el.split(",")
             temp.remove('')
             temp_temp = tuple(float(i) for i in temp)
             read_list.append(temp_temp)
-    stop_reading = time.time()
     f.close()
+    print("Drawing test start")
     start_draw = time.time()
     draw(read_list)
     #draw
     pygame.display.update()
-    pygame.display.flip()
+    #pygame.display.flip()
     stop_draw = time.time()
+    print("calculation          writing           reading                draw")
     return stop_calculation-start_calculation, stop_writing-start_writing, stop_reading-start_reading, stop_draw-start_draw
     #pygame.quit()
 if __name__ == "__main__":
-    print("calculation          writing           reading                draw")
     print(run())
