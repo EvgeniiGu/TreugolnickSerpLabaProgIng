@@ -1,8 +1,11 @@
+from tkinter import ROUND
+from unittest import result
 import pygame #as pg
 import random #as rd
 import math
 import time
 from pygame.color import THECOLORS
+from tabulate import tabulate
 random.seed()
 iteration = 1000000
 WHITE = (255, 255, 255)
@@ -86,10 +89,18 @@ def run():
     draw(read_list)
     #draw
     pygame.display.update()
-    #pygame.display.flip()
+    pygame.display.flip()
     stop_draw = time.time()
-    print("calculation          writing           reading                draw")
-    return stop_calculation-start_calculation, stop_writing-start_writing, stop_reading-start_reading, stop_draw-start_draw
+    time_calculation = round((stop_calculation-start_calculation)*1000)
+    time_writing = round((stop_writing-start_writing)*1000)
+    time_reading = round((stop_reading-start_reading)*1000)
+    time_draw = round((stop_draw-start_draw)*1000)
+    result_time = round((time_reading*time_draw*time_writing*time_calculation)**(1/4))
+    print(tabulate([['1', 17838, 10113, 3174, 7259, 8029.296054],
+                    ['2', 22339, 6824, 3282, 8575, 8093.173726],
+                    ['3', 10481, 3146, 1675, 3919, 3835.640349],
+                    ["Your PC", time_calculation, time_writing, time_reading, time_draw, result_time]], 
+                   headers=["Computer number","calculation","writing","reading", "draw", 'Result']))
     #pygame.quit()
 if __name__ == "__main__":
-    print(run())
+    run()
